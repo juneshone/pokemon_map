@@ -36,12 +36,12 @@ def show_all_pokemons(request):
         disappeared_at__gte=local_time
     )
     for pokemon_entity in active_pokemon_entities:
+        img_url = DEFAULT_IMAGE_URL
         if pokemon_entity.pokemon.image:
             img_url = request.build_absolute_uri(
                 pokemon_entity.pokemon.image.url
             )
-        else:
-            img_url = DEFAULT_IMAGE_URL
+
         add_pokemon(
             folium_map,
             pokemon_entity.lat,
@@ -52,10 +52,9 @@ def show_all_pokemons(request):
     pokemons = Pokemon.objects.all()
     pokemons_on_page = []
     for pokemon in pokemons:
+        img_url = DEFAULT_IMAGE_URL
         if pokemon.image:
             img_url = request.build_absolute_uri(pokemon.image.url)
-        else:
-            img_url = DEFAULT_IMAGE_URL
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
             'img_url': img_url,
@@ -106,12 +105,11 @@ def show_pokemon(request, pokemon_id):
 
     pokemon_previous_evolution = pokemon_object.previous_evolution
     if pokemon_previous_evolution:
+        previous_evolution_img_url = DEFAULT_IMAGE_URL
         if pokemon_previous_evolution.image:
             previous_evolution_img_url = request.build_absolute_uri(
                 pokemon_previous_evolution.image.url
             )
-        else:
-            previous_evolution_img_url = DEFAULT_IMAGE_URL
         pokemon["previous_evolution"] = {
             "title_ru": pokemon_object.previous_evolution.title,
             "pokemon_id": pokemon_object.previous_evolution.id,
@@ -120,12 +118,11 @@ def show_pokemon(request, pokemon_id):
 
     pokemon_next_evolution = pokemon_object.next_evolutions.first()
     if pokemon_next_evolution:
+        next_evolution_img_url = DEFAULT_IMAGE_URL
         if pokemon_next_evolution.image:
             next_evolution_img_url = request.build_absolute_uri(
                 pokemon_next_evolution.image.url
             )
-        else:
-            next_evolution_img_url = DEFAULT_IMAGE_URL
         pokemon["next_evolution"] = {
             "title_ru": pokemon_next_evolution.title,
             "pokemon_id": pokemon_next_evolution.id,
