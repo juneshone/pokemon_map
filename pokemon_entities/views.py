@@ -37,7 +37,9 @@ def show_all_pokemons(request):
     )
     for pokemon_entity in active_pokemon_entities:
         if pokemon_entity.pokemon.image:
-            img_url = request.build_absolute_uri(pokemon_entity.pokemon.image.url)
+            img_url = request.build_absolute_uri(
+                pokemon_entity.pokemon.image.url
+            )
         else:
             img_url = DEFAULT_IMAGE_URL
         add_pokemon(
@@ -103,8 +105,8 @@ def show_pokemon(request, pokemon_id):
     }
 
     pokemon_previous_evolution = pokemon_object.previous_evolution
-    if  pokemon_previous_evolution:
-        if  pokemon_previous_evolution.image:
+    if pokemon_previous_evolution:
+        if pokemon_previous_evolution.image:
             previous_evolution_img_url = request.build_absolute_uri(
                 pokemon_previous_evolution.image.url
             )
