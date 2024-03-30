@@ -46,3 +46,6 @@ class PokemonEntity(models.Model):
     strength = models.IntegerField(verbose_name='атака', blank=True)
     defence = models.IntegerField(verbose_name='защита', blank=True)
     stamina = models.IntegerField(verbose_name='выносливость', blank=True)
+
+    def __str__(self):
+        return f'{self.pokemon.title} {self.level} уровня'
