@@ -75,7 +75,7 @@ def show_pokemon(request, pokemon_id):
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
     local_time = localtime()
-    active_pokemon_entities = pokemon_object.pokemon.filter(
+    active_pokemon_entities = pokemon_object.pokemon_entities.filter(
         appeared_at__lte=local_time,
         disappeared_at__gte=local_time
     )
@@ -100,9 +100,20 @@ def show_pokemon(request, pokemon_id):
         "title_jp": pokemon_object.title_jp,
         "description": pokemon_object.pokemon_description,
         "img_url": img_url,
-        "entities": [],
-        "next_evolution": {}
     }
+
+    if pokemon_object.previous_evolution:
+        if pokemon_object.previous_evolution.image:
+            previous_evolution_img_url = request.build_absolute_uri(
+                pokemon_object.previous_evolution.image.url
+            )
+        else:
+            previous_evolution_img_url = DEFAULT_IMAGE_URL
+        pokemon["previous_evolution"] = {
+            "title_ru": pokemon_object.previous_evolution.title,
+            "pokemon_id": pokemon_object.previous_evolution.id,
+            "img_url": previous_evolution_img_url
+        }
 
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(), 'pokemon': pokemon
